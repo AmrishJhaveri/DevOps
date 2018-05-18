@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>App.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">cs540.hw1 (Mar 4, 2018 5:59:20 PM)</a> &gt; <a href="../../index.html" class="el_group">cs540.hw1</a> &gt; <a href="../index.html" class="el_bundle">src/main/java</a> &gt; <a href="index.source.html" class="el_package">cs540.hw1.cs540.hw1</a> &gt; <span class="el_source">App.java</span></div><h1>App.java</h1><pre class="source lang-java linenums">package cs540.hw1.cs540.hw1;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.List;
+
+import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.api.errors.NoHeadException;
+import org.eclipse.jgit.diff.DiffEntry;
+import org.eclipse.jgit.lib.ObjectReader;
+import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.revwalk.RevCommit;
+import org.eclipse.jgit.revwalk.RevTree;
+import org.eclipse.jgit.revwalk.RevWalk;
+import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
+import org.eclipse.jgit.treewalk.AbstractTreeIterator;
+import org.eclipse.jgit.treewalk.CanonicalTreeParser;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+<span class="nc" id="L26">public class App {</span>
+
+<span class="fc" id="L28">	private static String INPUT_JSON_READ_FILE = &quot;./src/main/resources/java-full-data.json&quot;;</span>
+
+<span class="fc" id="L30">	private static String OUTPUT_PROJECT_NAMES = &quot;./src/main/resources/output-project-names.json&quot;;</span>
+
+<span class="fc" id="L32">	private static String OUTPUT_REPO_LINKS = &quot;./src/main/resources/output-repo-links.json&quot;;</span>
+	
+<span class="fc" id="L34">	private static String OUTPUT_PROJECT_CHANGES=&quot;&quot;;</span>
+
+<span class="fc" id="L36">	private static String OUTPUT_CLONE_DIR = &quot;./Testing_output/&quot;;</span>
+
+	public static void main(String[] args) throws IOException, GitAPIException, ParseException {
+
+		// find all the projects from the URL.(Java)
+		// write to a file the project names(Java)
+		// this will be used to create Gitlab repos(Shell Script)
+		// change remote for all the projects and then push them to the gitlab
+		// repo(Shell Script)
+
+<span class="fc" id="L46">		int noOfProjects = 1;</span>
+
+		
+
+<span class="fc bfc" id="L50" title="All 2 branches covered.">		if (args.length &gt; 0) {</span>
+<span class="fc" id="L51">			noOfProjects=Integer.parseInt(args[0]);</span>
+<span class="fc" id="L52">			INPUT_JSON_READ_FILE = args[1];</span>
+<span class="fc" id="L53">			OUTPUT_PROJECT_NAMES = args[2];</span>
+<span class="fc" id="L54">			OUTPUT_REPO_LINKS = args[3];</span>
+<span class="fc" id="L55">			OUTPUT_CLONE_DIR = args[4];</span>
+
+		}
+<span class="fc" id="L58">		FileReader fileReader = new FileReader(INPUT_JSON_READ_FILE);</span>
+<span class="fc" id="L59">		JSONParser parser = new JSONParser();</span>
+
+<span class="fc" id="L61">		JSONObject jsonObject = (JSONObject) parser.parse(fileReader);</span>
+<span class="fc" id="L62">		JSONArray jsonArray = (JSONArray) jsonObject.get(&quot;items&quot;);</span>
+
+<span class="fc bfc" id="L64" title="All 2 branches covered.">		if (noOfProjects == -1) {</span>
+<span class="fc" id="L65">			noOfProjects = jsonArray.size();</span>
+		}
+
+<span class="fc" id="L68">		JSONObject innerObj = (JSONObject) jsonArray.get(0);</span>
+
+<span class="fc" id="L70">		System.out.println(innerObj.get(&quot;clone_url&quot;));</span>
+
+<span class="fc" id="L72">		StringBuffer fileNames = new StringBuffer();</span>
+<span class="fc" id="L73">		StringBuffer repoNames = new StringBuffer();</span>
+<span class="fc bfc" id="L74" title="All 2 branches covered.">		for (int i = 0; i &lt; noOfProjects; i++) {</span>
+<span class="fc" id="L75">			JSONObject obj = (JSONObject) jsonArray.get(i);</span>
+<span class="fc" id="L76">			fileNames.append(obj.get(&quot;name&quot;) + &quot;\n&quot;);</span>
+<span class="fc" id="L77">			repoNames.append(obj.get(&quot;clone_url&quot;) + &quot;\n&quot;);</span>
+<span class="fc" id="L78">			cloneRepo((String) obj.get(&quot;clone_url&quot;), (String) obj.get(&quot;name&quot;));</span>
+<span class="fc" id="L79">			getChangedFiles(getLastCommit(OUTPUT_CLONE_DIR+obj.get(&quot;name&quot;)),OUTPUT_CLONE_DIR+obj.get(&quot;name&quot;));</span>
+		}
+
+<span class="fc" id="L82">		Utility.writeMyFile(OUTPUT_PROJECT_NAMES, fileNames.toString());</span>
+<span class="fc" id="L83">		Utility.writeMyFile(OUTPUT_REPO_LINKS, repoNames.toString());</span>
+<span class="fc" id="L84">		}</span>
+
+	private static void cloneRepo(String repoUrl, String name) throws IOException, GitAPIException {
+
+		// prepare a new folder for the cloned repository
+<span class="fc" id="L89">		File localPath = new File(OUTPUT_CLONE_DIR + name);</span>
+
+<span class="pc bpc" id="L91" title="1 of 2 branches missed.">		if (!localPath.exists()) {</span>
+<span class="fc" id="L92">			localPath.mkdirs();</span>
+		}
+		
+		// then clone
+<span class="fc" id="L96">		System.out.println(&quot;Cloning from &quot; + repoUrl + &quot; to &quot; + localPath);</span>
+<span class="fc" id="L97">		long start = System.currentTimeMillis();</span>
+<span class="fc" id="L98">		Git result=null;</span>
+		try {
+<span class="fc" id="L100">			result= Git.cloneRepository().setURI(repoUrl).setDirectory(localPath).call();</span>
+			// Note: the call() returns an opened repository already which needs to be
+			// closed to avoid file handle leaks!
+
+		}
+		finally {
+			/*if(result!=null) {
+				result.close();
+			}*/
+		}
+<span class="fc" id="L110">		System.out.println(&quot;Clonning completed for repository. &quot; + &quot;\nTime Taken:&quot; + (System.currentTimeMillis() - start) + &quot; ms.&quot;);</span>
+
+<span class="fc" id="L112">	}</span>
+	
+	private static void getChangedFiles(String commitId,String location) throws IOException, GitAPIException {
+<span class="fc" id="L115">        try (Repository repository = openJGitCookbookRepository(location)) {</span>
+<span class="fc" id="L116">            try (Git git = new Git(repository)) {</span>
+                // to compare against the &quot;previous&quot; commit, you can use
+                // the caret-notation
+               
+<span class="fc" id="L120">                listDiff(repository, git,</span>
+<span class="fc" id="L121">                		commitId+&quot;^&quot;,</span>
+<span class="fc" id="L122">                		commitId);</span>
+            
+<span class="pc bpc" id="L124" title="7 of 8 branches missed.">            }</span>
+<span class="pc bpc" id="L125" title="7 of 8 branches missed.">        }</span>
+<span class="fc" id="L126">    }</span>
+
+    private static void listDiff(Repository repository, Git git, String oldCommit, String newCommit) throws GitAPIException, IOException {
+<span class="fc" id="L129">        final List&lt;DiffEntry&gt; diffs = git.diff()</span>
+<span class="fc" id="L130">                .setOldTree(prepareTreeParser(repository, oldCommit))</span>
+<span class="fc" id="L131">                .setNewTree(prepareTreeParser(repository, newCommit))</span>
+<span class="fc" id="L132">                .call();</span>
+
+<span class="fc" id="L134">        System.out.println(&quot;Found: &quot; + diffs.size() + &quot; differences&quot;);</span>
+<span class="fc bfc" id="L135" title="All 2 branches covered.">        for (DiffEntry diff : diffs) {</span>
+<span class="pc bpc" id="L136" title="1 of 2 branches missed.">            System.out.println(&quot;Diff: &quot; + diff.getChangeType() + &quot;: &quot; + (diff.getOldPath().equals(diff.getNewPath()) ? diff.getNewPath() : diff.getOldPath() + &quot; -&gt; &quot; + diff.getNewPath()));</span>
+        }
+<span class="fc" id="L138">    }</span>
+
+    private static AbstractTreeIterator prepareTreeParser(Repository repository, String objectId) throws IOException {
+        // from the commit we can build the tree which allows us to construct the TreeParser
+        //noinspection Duplicates
+<span class="fc" id="L143">        try (RevWalk walk = new RevWalk(repository)) {</span>
+<span class="fc" id="L144">            RevCommit commit = walk.parseCommit(repository.resolve(objectId));</span>
+<span class="fc" id="L145">            RevTree tree = walk.parseTree(commit.getTree().getId());</span>
+
+<span class="fc" id="L147">            CanonicalTreeParser treeParser = new CanonicalTreeParser();</span>
+<span class="fc" id="L148">            try (ObjectReader reader = repository.newObjectReader()) {</span>
+<span class="fc" id="L149">                treeParser.reset(reader, tree.getId());</span>
+<span class="pc bpc" id="L150" title="7 of 8 branches missed.">            }</span>
+
+<span class="fc" id="L152">            walk.dispose();</span>
+
+<span class="pc" id="L154">            return treeParser;</span>
+<span class="pc bpc" id="L155" title="7 of 8 branches missed.">        }</span>
+    }
+    
+    private static Repository openJGitCookbookRepository(String location) throws IOException {
+<span class="fc" id="L159">        FileRepositoryBuilder builder = new FileRepositoryBuilder();</span>
+<span class="fc" id="L160">        return builder</span>
+<span class="fc" id="L161">                .readEnvironment() // scan environment GIT_* variables</span>
+<span class="fc" id="L162">                .findGitDir(new File(location)) // scan up the file system tree</span>
+<span class="fc" id="L163">                .build();</span>
+    }
+    
+    private static String getLastCommit(String location) throws IOException, NoHeadException, GitAPIException {
+<span class="fc" id="L167">    	try (Repository repository = openJGitCookbookRepository(location)) {</span>
+<span class="fc" id="L168">    		String entireCommit=&quot;&quot;;</span>
+<span class="fc" id="L169">            try (Git git = new Git(repository)) {</span>
+<span class="fc" id="L170">                Iterable&lt;RevCommit&gt; commits = git.log().all().call();</span>
+<span class="pc bpc" id="L171" title="1 of 2 branches missed.">                for (RevCommit commit : commits) {</span>
+<span class="fc" id="L172">                	entireCommit=commit.name();</span>
+<span class="fc" id="L173">                    System.out.println(&quot;LogCommit: &quot; + commit.name());</span>
+                    break;
+                }
+<span class="pc bpc" id="L176" title="7 of 8 branches missed.">            }</span>
+<span class="pc" id="L177">            return entireCommit;</span>
+<span class="pc bpc" id="L178" title="7 of 8 branches missed.">        }</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span>cs540.hw1 (Mar 4, 2018 5:59:20 PM)</div></body></html>
