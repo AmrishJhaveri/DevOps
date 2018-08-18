@@ -34,4 +34,4 @@ There are 2 ways to install Understand on Docker:
 		>`UserText=<registered-email>`
 
 + Manually setup Understand in jenkins container in Docker
-	Refer to [Installatioin_Config.md](https://bitbucket.org/ajhave5/amrish_jhaveri_chinmay_gangal_hw1_cs540/src/master/Installation_Config.md) for a detailed stepwise instructions on installing Understand in Jenkins container on Docker from scratch		
+	Refer to [Installatioin_Config.md](https://github.com/AmrishJhaveri/DevOps/blob/master/Installation_Config.md) for a detailed stepwise instructions on installing Understand in Jenkins container on Docker from scratch		
