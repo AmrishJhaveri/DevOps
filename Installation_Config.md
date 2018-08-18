@@ -61,7 +61,7 @@ Setup the *admin* user.
  - Please setup Gitlab as per the instructions given below and create a root user.
  - Navigate to *Credentials* section displayed on the left hand-side of the Jenkins dashboard.
  - Click on the *System* sub-menu under Credentials on the left side.
- - Open the drop down of *Global credentials (unrestricted)* and select *Add Credentials*.![Creds](https://bitbucket.org/ajhave5/amrish_jhaveri_chinmay_gangal_hw1/raw/master/images/Creds.PNG)
+ - Open the drop down of *Global credentials (unrestricted)* and select *Add Credentials*.![Creds](https://github.com/AmrishJhaveri/DevOps/blob/master/images/Creds.PNG)
  - Create new credentials of the kind *Username with password*.
  - Make the scope as *Global*
  - Insert the *Username* created on Gitlab i.e. root
@@ -79,7 +79,7 @@ For installing Maven on Jenkins follow the following steps:
 - Navigate to `Global Tool Configuration` present inside `Manage Jenkins` section.
 - Scroll down to find the `Maven` Section and click on `Maven Installations`.
 - Give the installation a name so it can be referred in the Jenkins jobs.
-![](https://bitbucket.org/ajhave5/amrish_jhaveri_chinmay_gangal_hw1/raw/master/images/maven.JPG)
+![](https://github.com/AmrishJhaveri/DevOps/blob/master/images/maven.JPG)
 
 
 #### Environment Variables
@@ -88,7 +88,7 @@ For using the Understand binaries we have to provide the binary path to `UND` as
 - Under Global Properties, check `Environment Variables` and append the Understand path to the `und` script to the `PATH` variable:
 e.g. : `/var/jenkins_home/workspace/Git_to_Gitlab/Understand/scitools/bin/linux64/`
 
-![](https://bitbucket.org/ajhave5/amrish_jhaveri_chinmay_gangal_hw1/raw/master/images/env_var.JPG)
+![](https://github.com/AmrishJhaveri/DevOps/blob/master/images/env_var.JPG)
 
 ### Jenkins Job
 
@@ -99,7 +99,7 @@ e.g. : `/var/jenkins_home/workspace/Git_to_Gitlab/Understand/scitools/bin/linux6
 #### Passing Parameters to the Job
 - Under `General` tab present in the `Job Configure` Page check the option `This project is parameterized`.
 - Fill the details as given in the image.
-![](https://bitbucket.org/ajhave5/amrish_jhaveri_chinmay_gangal_hw1/raw/master/images/param.JPG) 
+![](https://github.com/AmrishJhaveri/DevOps/blob/master/images/param.JPG) 
 
 #### 1. Shell Commands
 - Under the Build Section, add a tab `Execute Shell` and enter the following commands:
@@ -312,7 +312,7 @@ Setup root user and login to Gitlab.
 
 #### Access Token for Jenkins
 - Navigate to top right dropdown menu and click on `Settings`. Open `Access Tokens` tab.
-![](https://bitbucket.org/ajhave5/amrish_jhaveri_chinmay_gangal_hw1/raw/master/images/gitlab.JPG)
+![](https://github.com/AmrishJhaveri/DevOps/blob/master/images/gitlab.JPG)
 - Enter the name and select the 2 check boxes and create the access token.
 - Copy the token and configure with Jenkins as described above.
 
@@ -411,13 +411,13 @@ Refer this [link](https://redis.io/commands/hgetall).
 
 ### Cloning Repo with JGIT
 This is a Maven based Java Project which uses JGit API to clone the repositories from Github.
-Project present at [https://bitbucket.org/ajhave5/amrish_jhaveri_chinmay_gangal_hw1_cs540/raw/master/MyJGitProject/](https://bitbucket.org/ajhave5/amrish_jhaveri_chinmay_gangal_hw1_cs540/raw/master/MyJGitProject/) 
+Project present at [https://github.com/AmrishJhaveri/DevOps/tree/master/MyJGitProject](https://github.com/AmrishJhaveri/DevOps/tree/master/MyJGitProject) 
 
 ### Redis Storage with Jedis
 This is a Maven based Java Project which uses the Jedis API to push and retrieve data on the Redis Server Database.
-Project present at [https://bitbucket.org/ajhave5/amrish_jhaveri_chinmay_gangal_hw1_cs540/raw/master/Redis/](https://bitbucket.org/ajhave5/amrish_jhaveri_chinmay_gangal_hw1_cs540/raw/master/Redis/)
+Project present at [https://github.com/AmrishJhaveri/DevOps/tree/master/Redis/](https://github.com/AmrishJhaveri/DevOps/tree/master/Redis/)
 
 ### Retest Components with Understand & JGit
 This is a Maven based Java Project which uses the JGit API to find the files changed in the previous commit and uses the data provided by Understand API to find the file components which need to be retested. 
 
-Project present at [https://bitbucket.org/ajhave5/amrish_jhaveri_chinmay_gangal_hw1_cs540/raw/master/GitRetest/](https://bitbucket.org/ajhave5/amrish_jhaveri_chinmay_gangal_hw1_cs540/raw/master/GitRetest/)
+Project present at [https://github.com/AmrishJhaveri/DevOps/tree/master/GitRetest/](https://github.com/AmrishJhaveri/DevOps/tree/master/GitRetest/)
