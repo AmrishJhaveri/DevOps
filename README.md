@@ -58,14 +58,14 @@ There are 2 ways to install this:
 
 - **Manually**
 
-	Refer to the [Installation_Config.md](https://bitbucket.org/ajhave5/amrish_jhaveri_chinmay_gangal_hw1_cs540/src/master/Installation_Config.md?at=master&fileviewer=file-view-default) file for detailed steps regarding manual installation
+	Refer to the [Installation_Config.md](https://github.com/AmrishJhaveri/DevOps/blob/master/Installation_Config.md) file for detailed steps regarding manual installation
 
 To verify installation, do the following:
 
 - In Docker terminal, type `docker-machine ip` to know the IP address of your Docker virtual machine. This is your <docker-ip>
 - Go to your browser, and access the url in this format: `<docker-ip>:9080`, then use credentias provided below to login. This should lead you to the Jenkins homepage, where you would see 1 job created: "Git\_to\_Gitlab"
 
-	![Jenkins_Home](https://bitbucket.org/ajhave5/amrish_jhaveri_chinmay_gangal_hw1_CS540/raw/master/images/sr_1.JPG)
+	![Jenkins_Home](https://github.com/AmrishJhaveri/DevOps/blob/master/images/sr_1.JPG)
 
 - Also open another url in this format: `<docker-ip>:30080`. This should lead you to the Gitlab homepage. Login with credentials specified below
 
@@ -81,7 +81,7 @@ Gitlab|root	|`123456789`
 ----------
 
 For a sample run and the screenshots of the output, you can open the following link: 
->[**Screenshots**](https://bitbucket.org/ajhave5/amrish_jhaveri_chinmay_gangal_hw1_cs540/src/master/Sample_run_&_output_screenshots.md?at=master&fileviewer=file-view-default)
+>[**Screenshots**](https://github.com/AmrishJhaveri/DevOps/blob/master/Sample_run_%26_output_screenshots.md)
 
 ## Changing Configuration
 
@@ -113,11 +113,7 @@ For a sample run and the screenshots of the output, you can open the following l
 ----------
 1.  Jacoco reports for Maven projects downloaded from Github is present inside 	the Project specific Jenkins Job.
 2.  Understand reports can be seen in the console of the jenkins project build as 	described.
-3.  For Java projects used for cloning and finding re-test components, Jacoco 	Coverage can be found at
-	1.  [My-Jgit-Project](https://bitbucket.org/ajhave5/amrish_jhaveri_chinmay_gangal_hw1_cs540/raw/master/MyJGitProject/Testing_output/Jacoco_HTML/)
-	2.  [Git-Retest](https://bitbucket.org/ajhave5/amrish_jhaveri_chinmay_gangal_hw1_cs540/raw/master/GitRetest/cs540.hw1.gitRetest/Testing_output/Jacoco_HTML/)
-	
-	Open the location ProjectName/Testing_output/Jacoco_HTML/
+
 
 ## Future Scope
 
