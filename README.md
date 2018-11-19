@@ -14,6 +14,8 @@ This DevOps application workflow automates continuous integration and analysis o
 
 ## Process Flow
 ----------
+![](https://github.com/AmrishJhaveri/DevOps/blob/master/images/Architecture-devOps.png)
+
 1. Based on input query, fetch top 3 repositories from GitHub using GitHub Developer API
 2. Clone these respositories into GitLab server using JGit
 3. Generate new jobs in Jenkins automatically using DSL Plugin for each of above cloned GitLab repository.
@@ -21,6 +23,8 @@ This DevOps application workflow automates continuous integration and analysis o
 	- Every job has builds scheduled every 15 minutes, unless triggered by a commit, in which case the build happens before the 15-minute timeout
 4. On every build, a call to Understand is triggered to fetch a list of files dependent on the files changed in the most recent commit. The union of both these lists serves as the list of files to be retested by the developers, thus providing a level of insight.
 5. Update issues of each repository to Redis storage
+
+
 
 ## Getting Started
 
